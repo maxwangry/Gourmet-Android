@@ -1,43 +1,35 @@
 package com.app.ruoyu.gourmet;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
-public class RestaurantListActivity extends AppCompatActivity {
+public class RestaurantListActivity extends AppCompatActivity implements RestaurantListFragment.OnItemSelectListener {
+
+    RestaurantListFragment listFragment;
+    RestaurantGridFragment gridFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_list);
-        // Get ListView object from xml.
-        ListView restaurantListView = (ListView) findViewById(R.id.restaurant_list);
 
-        // Initialize an adapter.
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this,
-                R.layout.activity_restaurant_list_item,
-                R.id.restaurant_name,
-                getRestaurantNames());
+        //add list view
+        if (isTablet()) {
+            listFragment = new RestaurantListFragment();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_list_container, listFragment).commit();
+        }
 
-        // Assign adapter to ListView.
-        restaurantListView.setAdapter(adapter);
+        //add Gridview
+        gridFragment = new RestaurantGridFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_grid_container, gridFragment).commit();
     }
 
-    /**
-     * A dummy function to get fake restaurant names.
-     *
-     * @return an array of fake restaurant names.
-     */
-    private String[] getRestaurantNames() {
-        String[] names = {
-                "Restaurant1", "Restaurant2", "Restaurant3",
-                "Restaurant4", "Restaurant5", "Restaurant6",
-                "Restaurant7", "Restaurant8", "Restaurant9",
-                "Restaurant10", "Restaurant11", "Restaurant12"};
-        return names;
+    private boolean isTablet() {
+        return (getApplicationContext().getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK) >=
+                Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
     @Override
@@ -68,5 +60,10 @@ public class RestaurantListActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.e("Life cycle test", "We are at onDestroy()");
+    }
+
+    @Override
+    public void onItemSelected(int position) {
+        gridFragment.onItemSelected(position);
     }
 }
