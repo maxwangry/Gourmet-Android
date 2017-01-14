@@ -16,7 +16,7 @@ public class DataService {
         for (int i = 0; i < 10; ++i) {
             restaurantData.add(
                     new Restaurant("Restaurant", "1184 W valley Blvd, CA 90101",
-                            "New American"));
+                            "New American", i * 7 + 7, i * 5 - 5));
         }
         return restaurantData;
     }

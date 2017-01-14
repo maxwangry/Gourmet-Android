@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,7 +40,14 @@ public class RestaurantListFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Restaurant r = (Restaurant) listView.getItemAtPosition(position);
                 //Create explicit intent to start map activity class
+                //Prepare all the data we need to start map activity.
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(
+                        RestaurantMapActivity.EXTRA_LATLNG,
+                        new LatLng(r.getLat(), r.getLng()));
                 Intent intent = new Intent(view.getContext(), RestaurantMapActivity.class);
+                intent.putExtras(bundle);
+
                 startActivity(intent);
             }
         });

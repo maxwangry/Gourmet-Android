@@ -1,6 +1,5 @@
 package com.app.ruoyu.gourmet;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,21 +14,8 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_list);
 
-        //add list view
-        if (isTablet()) {
-            listFragment = new RestaurantListFragment();
-            getSupportFragmentManager().beginTransaction().add(R.id.fragment_list_container, listFragment).commit();
-        }
-
-        //add Gridview
-        gridFragment = new RestaurantGridFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_grid_container, gridFragment).commit();
-    }
-
-    private boolean isTablet() {
-        return (getApplicationContext().getResources().getConfiguration().screenLayout &
-                Configuration.SCREENLAYOUT_SIZE_MASK) >=
-                Configuration.SCREENLAYOUT_SIZE_LARGE;
+        listFragment = new RestaurantListFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_list_container, listFragment).commit();
     }
 
     @Override
