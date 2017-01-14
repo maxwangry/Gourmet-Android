@@ -2,13 +2,13 @@ package com.app.ruoyu.gourmet;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
@@ -29,30 +29,28 @@ public class RestaurantListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_restaurant_list, container, false);
-        ListView listView = (ListView) view.findViewById(R.id.restaurant_list);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
-                getRestaurantNames());
+        final ListView listView = (ListView) view.findViewById(R.id.restaurant_list);
+        listView.setAdapter(new RestaurantAdapter(getActivity()));
 
-        // Assign adapter to ListView.
-        listView.setAdapter(adapter);
+        // Set a listener to ListView.
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                mCallback.onItemSelected(i);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Restaurant r = (Restaurant) listView.getItemAtPosition(position);
+                //Create explicit intent to start map activity class
+                Intent intent = new Intent(view.getContext(), RestaurantMapActivity.class);
+                startActivity(intent);
             }
         });
         return view;
     }
 
     private String[] getRestaurantNames() {
-        String[] names = {
+        return new String[]{
                 "Restaurant1", "Restaurant2", "Restaurant3",
                 "Restaurant4", "Restaurant5", "Restaurant6",
                 "Restaurant7", "Restaurant8", "Restaurant9",
                 "Restaurant10"};
-        return names;
     }
 
     @Override
@@ -61,7 +59,6 @@ public class RestaurantListFragment extends Fragment {
         try {
             mCallback = (OnItemSelectListener) context;
         } catch (ClassCastException e) {
-            //do something
         }
     }
 
