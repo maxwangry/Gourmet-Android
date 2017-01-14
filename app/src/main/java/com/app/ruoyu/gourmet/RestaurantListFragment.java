@@ -47,7 +47,6 @@ public class RestaurantListFragment extends Fragment {
                         new LatLng(r.getLat(), r.getLng()));
                 Intent intent = new Intent(view.getContext(), RestaurantMapActivity.class);
                 intent.putExtras(bundle);
-
                 startActivity(intent);
             }
         });
