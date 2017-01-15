@@ -13,8 +13,11 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_list);
-        listFragment = new RestaurantListFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_list_container, listFragment).commit();
+        if (findViewById(R.id.fragment_container) != null) {
+            listFragment = new RestaurantListFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_list_container, listFragment).commit();
+        }
     }
 
     @Override

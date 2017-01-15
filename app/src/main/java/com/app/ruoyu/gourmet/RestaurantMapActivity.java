@@ -24,7 +24,7 @@ public class RestaurantMapActivity extends FragmentActivity implements OnMapRead
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_map);
-        MapFragment mapFragment =
+        mapFragment =
                 (MapFragment) getFragmentManager().findFragmentById(R.id.restaurant_map);
 
         // This function automatically initializes the maps system and the view.
