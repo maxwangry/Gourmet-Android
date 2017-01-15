@@ -19,6 +19,7 @@ public class RestaurantMapActivity extends FragmentActivity implements OnMapRead
     MapFragment mapFragment;
     private int number = 8;
     private LatLng toMark;
+    private BroadcastReceiver mBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,8 @@ public class RestaurantMapActivity extends FragmentActivity implements OnMapRead
         }
         IntentFilter filter = new IntentFilter();
         filter.addAction("GOOGLEMAP_ZOOM");
-        this.registerReceiver(new ZoomMap(), filter);
+        mBroadcastReceiver = new ZoomMap();
+        this.registerReceiver(mBroadcastReceiver, filter);
     }
 
     @Override
@@ -46,6 +48,12 @@ public class RestaurantMapActivity extends FragmentActivity implements OnMapRead
             map.moveCamera(CameraUpdateFactory.newLatLng(toMark));
             map.animateCamera(CameraUpdateFactory.zoomTo(number), 2000, null);
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        this.unregisterReceiver(mBroadcastReceiver);
     }
 
     class ZoomMap extends BroadcastReceiver {

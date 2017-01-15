@@ -3,6 +3,7 @@ package com.app.ruoyu.gourmet;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.util.LruCache;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,6 +20,29 @@ import java.util.List;
  * Service for retrieving data from backend.
  */
 public class DataService {
+    private LruCache<String, Bitmap> bitmapCache;
+
+    /**
+     * Constructor.
+     */
+    public DataService() {
+        // Get max available VM memory, exceeding this amount will throw an
+        // OutOfMemory exception.
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+
+        // Use 1/8th of the available memory for this memory cache.
+        final int cacheSize = maxMemory / 8;
+        Log.e("Cache size", Integer.toString(cacheSize));
+
+        bitmapCache = new LruCache<String, Bitmap>(cacheSize) {
+            @Override
+            protected int sizeOf(String key, Bitmap bitmap) {
+                // The cache size will be measured in kilobytes.
+                return bitmap.getByteCount() / 1024;
+            }
+        };
+    }
+
     /**
      * Get nearby restaurants through Yelp API.
      */
@@ -71,17 +95,20 @@ public class DataService {
      * Download an Image from the given URL, then decodes and returns a Bitmap object.
      */
     private Bitmap getBitmapFromURL(String imageUrl) {
-        Bitmap bitmap = null;
-        try {
-            URL url = new URL(imageUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            bitmap = BitmapFactory.decodeStream(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e("Error: ", e.getMessage());
+        Bitmap bitmap = bitmapCache.get(imageUrl);
+        if (bitmap == null) {
+            try {
+                URL url = new URL(imageUrl);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                bitmap = BitmapFactory.decodeStream(input);
+                bitmapCache.put(imageUrl, bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.e("Error: ", e.getMessage());
+            }
         }
         return bitmap;
     }
