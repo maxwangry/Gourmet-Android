@@ -51,12 +51,15 @@ public class RestaurantAdapter extends BaseAdapter {
                 R.id.restaurant_type);
         ImageView restaurantThumbnail = (ImageView) convertView.findViewById(
                 R.id.restaurant_thumbnail);
+        ImageView restaurantRating = (ImageView) convertView.findViewById(
+                R.id.restaurant_rating);
 
         Restaurant r = restaurantData.get(position);
         restaurantName.setText(r.getName());
         restaurantAddress.setText(r.getAddress());
         restaurantType.setText(r.getType());
         restaurantThumbnail.setImageBitmap(r.getThumbnail());
+        restaurantRating.setImageBitmap(r.getRating());
         return convertView;
     }
 }

@@ -15,19 +15,21 @@ public class Restaurant {
     private double lat;
     private double lng;
     private Bitmap thumbnail;
+    private Bitmap rating;
 
     /**
      * Constructor
      *
      * @param name name of the restaurant
      */
-    public Restaurant(String name, String address, String type, double lat, double lng, Bitmap thumbnail) {
+    public Restaurant(String name, String address, String type, double lat, double lng, Bitmap thumbnail, Bitmap rating) {
         this.name = name;
         this.address = address;
         this.type = type;
         this.lat = lat;
         this.lng = lng;
         this.thumbnail = thumbnail;
+        this.rating = rating;
     }
 
     /**
@@ -55,5 +57,9 @@ public class Restaurant {
 
     public Bitmap getThumbnail() {
         return thumbnail;
+    }
+
+    public Bitmap getRating() {
+        return rating;
     }
 }

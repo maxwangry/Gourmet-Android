@@ -55,9 +55,9 @@ public class DataService {
 
                     // Download the image.
                     Bitmap thumbnail = getBitmapFromURL(business.getString("image_url"));
-
+                    Bitmap rating = getBitmapFromURL(business.getString("rating_img_url"));
                     restaurants.add(
-                            new Restaurant(name, address, type, lat, lng, thumbnail));
+                            new Restaurant(name, address, type, lat, lng, thumbnail, rating));
                 }
             }
             return restaurants;
