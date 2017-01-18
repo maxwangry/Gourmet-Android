@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 buttonBackend.setText("New text");
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
             }
         });
     }

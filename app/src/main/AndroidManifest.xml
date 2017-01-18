@@ -21,7 +21,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCc_GKv1_VT5S_fhlSJ-G-70rTQiQNCN94" />
 
-        <activity android:name=".RestaurantMapActivity"></activity>
+        <activity android:name=".RestaurantMapActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,6 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".LoginActivity" />
     </application>
 
 </manifest>
