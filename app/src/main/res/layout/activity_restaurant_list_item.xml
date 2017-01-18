@@ -10,11 +10,12 @@
         android:layout_height="100dp"
         android:layout_weight="1" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="2"
+        android:orientation="vertical"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
@@ -31,6 +32,15 @@
             android:layout_height="25dp"
             android:layout_below="@id/restaurant_name" />
 
+        <RatingBar
+            android:id="@+id/restaurant_rating_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:isIndicator="true"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:visibility="gone" />
+
         <TextView
             android:id="@+id/restaurant_address"
             android:layout_width="match_parent"
@@ -44,5 +54,5 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/restaurant_address"
             android:textSize="13sp" />
-    </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.app.ruoyu.gourmet;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -21,10 +22,12 @@ import java.util.List;
  */
 public class DataService {
     private LruCache<String, Bitmap> bitmapCache;
+    private Context mContext;
 
-    /**
-     * Constructor.
-     */
+    public DataService(Context context) {
+        mContext = context;
+    }
+
     public DataService() {
         // Get max available VM memory, exceeding this amount will throw an
         // OutOfMemory exception.
@@ -62,21 +65,17 @@ public class DataService {
             ArrayList<Restaurant> restaurants = new ArrayList<>();
             for (int i = 0; i < businesses.length(); i++) {
                 JSONObject business = businesses.getJSONObject(i);
-
                 //Parse restaurant information
                 if (business != null) {
                     String name = business.getString("name");
                     String type = ((JSONArray) business.get("categories")).
                             getJSONArray(0).get(0).toString();
-
                     JSONObject location = (JSONObject) business.get("location");
                     JSONObject coordinate = (JSONObject) location.get("coordinate");
                     double lat = coordinate.getDouble("latitude");
                     double lng = coordinate.getDouble("longitude");
                     String address =
                             ((JSONArray) location.get("display_address")).get(0).toString();
-
-
                     // Download the image.
                     Bitmap thumbnail = getBitmapFromURL(business.getString("image_url"));
                     Bitmap rating = getBitmapFromURL(business.getString("rating_img_url"));
@@ -94,8 +93,11 @@ public class DataService {
     /**
      * Download an Image from the given URL, then decodes and returns a Bitmap object.
      */
-    private Bitmap getBitmapFromURL(String imageUrl) {
-        Bitmap bitmap = bitmapCache.get(imageUrl);
+    public Bitmap getBitmapFromURL(String imageUrl) {
+        Bitmap bitmap = null;
+        if (bitmapCache != null) {
+            bitmap = bitmapCache.get(imageUrl);
+        }
         if (bitmap == null) {
             try {
                 URL url = new URL(imageUrl);
@@ -104,7 +106,9 @@ public class DataService {
                 connection.connect();
                 InputStream input = connection.getInputStream();
                 bitmap = BitmapFactory.decodeStream(input);
-                bitmapCache.put(imageUrl, bitmap);
+                if (bitmapCache != null) {
+                    bitmapCache.put(imageUrl, bitmap);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
                 Log.e("Error: ", e.getMessage());

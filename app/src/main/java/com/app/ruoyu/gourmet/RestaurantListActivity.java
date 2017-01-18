@@ -1,5 +1,6 @@
 package com.app.ruoyu.gourmet;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,9 +15,15 @@ public class RestaurantListActivity extends AppCompatActivity implements Restaur
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_list);
         if (findViewById(R.id.fragment_container) != null) {
-            listFragment = new RestaurantListFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_list_container, listFragment).commit();
+            Intent intent = getIntent();
+            if (intent.getExtras() != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fragment_list_container, new BackendListFragment()).commit();
+            } else {
+                listFragment = new RestaurantListFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fragment_list_container, listFragment).commit();
+            }
         }
     }
 
